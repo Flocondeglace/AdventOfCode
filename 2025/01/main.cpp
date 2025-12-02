@@ -41,18 +41,47 @@ void part2() {
     std::string line;
     int currentPointingDirection = 50;
     int numberOfZeros = 0;
+    bool pointedAtZero = false;
+    std::cout << "The dial starts by pointing at: " << currentPointingDirection << std::endl;
+    int a;
     while (std::getline(input, line)) {
         char direction = line[0];
         int value = std::stoi(line.substr(1));
+
         if (direction == 'L') {
             currentPointingDirection -= value;
         } else if (direction == 'R') {
             currentPointingDirection += value;
         }
-        numberOfZeros += (currentPointingDirection / 100);
-        currentPointingDirection = currentPointingDirection % 100;
+
+        if (currentPointingDirection == 0){
+            numberOfZeros++;
+        }
+
+        while (currentPointingDirection < 0) {
+            currentPointingDirection += 100;
+            if (pointedAtZero){
+                pointedAtZero = false;
+            } else {
+                numberOfZeros++;
+            }
+        }
+
+        
+
+        while (currentPointingDirection >= 100) {
+            currentPointingDirection -= 100;
+            numberOfZeros++;
+        }
+
+        if (currentPointingDirection == 0){
+            pointedAtZero = true;
+        }
+        
+        
     }
     std::cout << "Number of zeros : " << numberOfZeros << std::endl;
+    std::cout << "Final pointing direction : " << currentPointingDirection << std::endl;
     input.close();
 }
 
